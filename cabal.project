@@ -38,7 +38,7 @@
 --
 --------------------------------------------------------------------------------
 
-index-state: 2022-03-29T23:10:49Z
+index-state: 2022-05-18T00:00:00Z
 with-compiler: ghc-8.10.7
 
 packages:
@@ -94,7 +94,7 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/cardano-base
-    tag: 41545ba3ac6b3095966316a99883d678b5ab8da8
+    tag: 631cb6cf1fa01ab346233b610a38b3b4cba6e6ab
     subdir:
             base-deriving-via
             binary
@@ -115,7 +115,7 @@ source-repository-package
 source-repository-package
   type: git
   location: https://github.com/input-output-hk/plutus
-  tag: fc5fe94d3d9525d032bcbc79ff0e1ebcfd8ef143
+  tag: fec94223a985e34d3b270460c8f150002f41b85b
   subdir:
     plutus-core
     plutus-ledger-api
@@ -138,10 +138,12 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/cardano-ledger
-    tag: 1a9ec4ae9e0b09d54e49b2a40c4ead37edadcce5
+    tag: c415253fff9a5ce9d7575230fc9098bcfee97653
     subdir:
       eras/alonzo/impl
       eras/alonzo/test-suite
+      eras/babbage/impl
+      eras/babbage/test-suite
       eras/byron/chain/executable-spec
       eras/byron/crypto
       eras/byron/crypto/test
@@ -156,7 +158,7 @@ source-repository-package
       libs/cardano-ledger-pretty
       libs/cardano-protocol-tpraos
       libs/cardano-data
-      libs/compact-map
+      libs/vector-map
       libs/set-algebra
       libs/small-steps
       libs/small-steps-test
@@ -165,11 +167,11 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/cardano-node
-    tag: 73f9a746362695dc2cb63ba757fbcabb81733d23
+    tag: 67f30e25f23a7bd5e500e0da2366f8a2ca4b6932
     subdir:
       cardano-api
-      cardano-git-rev
       cardano-cli
+      cardano-git-rev
       cardano-node
       cardano-node-chairman
       trace-dispatcher
@@ -183,20 +185,26 @@ source-repository-package
     subdir: cardano-prelude
             cardano-prelude-test
 
+-- In particular we rely on the code from this PR:
+--  * <https://github.com/input-output-hk/cardano-sl-x509/pull/6>
+-- being merged.
 source-repository-package
     type: git
-    location: https://github.com/input-output-hk/cardano-sl-x509
-    tag: 12925934c533b3a6e009b61ede555f8f26bac037
+    location: https://github.com/MELD-labs/cardano-sl-x509
+    tag: 819997049b9cc675b28059d3d6f511d08f934d10
 
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/goblins
     tag: cde90a2b27f79187ca8310b6549331e59595e7ba
 
+-- In particular we rely on the code from this PR:
+--  * <https://github.com/input-output-hk/iohk-monitoring-framework/pull/622>
+-- being merged.
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/iohk-monitoring-framework
-    tag: 808724ff8a19a33d0ed06f9ef59fbd900b08553c
+    tag: eb7854d1337637b8672af1227b276aa33a658f47
     subdir: contra-tracer
             iohk-monitoring
             plugins/backend-aggregation
@@ -208,10 +216,8 @@ source-repository-package
 source-repository-package
     type: git
     location: https://github.com/input-output-hk/ouroboros-network
-    tag: 4fac197b6f0d2ff60dc3486c593b68dc00969fbf
+    tag: ea202b7b21983140d1944ccfde8750b891b59699
     subdir:
-      io-sim
-      io-classes
       monoidal-synchronisation
       network-mux
       ouroboros-consensus
@@ -222,11 +228,25 @@ source-repository-package
       ouroboros-network
       ouroboros-network-framework
       ouroboros-network-testing
-      strict-stm
-      typed-protocols
-      typed-protocols-cborg
-      typed-protocols-examples
       ntp-client
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/io-sim
+  tag: 606de33fa2f467d108fb1efb86daeb3348bf34e3
+  subdir:
+    io-classes
+    io-sim
+    strict-stm
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/typed-protocols
+  tag: 91c3fba44d68439df207796171cd6f867354b76b
+  subdir:
+    typed-protocols
+    typed-protocols-cborg
+    typed-protocols-examples
 
 source-repository-package
     type: git
@@ -241,6 +261,23 @@ source-repository-package
     tag: ee59880f47ab835dbd73bea0847dab7869fc20d8
     --sha256: 1lrzknw765pz2j97nvv9ip3l1mcpf2zr4n56hwlz0rk7wq7ls4cm
 
+-- Until https://github.com/tibbe/ekg-json/pull/12 gets merged with aeson2 support
+source-repository-package
+  type: git
+  location: https://github.com/vshabanov/ekg-json
+  tag: 00ebe7211c981686e65730b7144fbf5350462608
+
+-- TODO This is a compatibility shim to make it easier for our library dependencies to
+-- be compatible with both aeson 1 & 2.  Once downstream projects are all upgraded to
+-- work with aeson-2, library dependencies will need to be updated to no longer use
+-- this compatibility shim and have bounds to indicate they work with aeson-2 only.
+-- After this, the dependency to hw-aeson can be dropped.
+source-repository-package
+    type: git
+    location: https://github.com/haskell-works/hw-aeson
+    tag: d99d2f3e39a287607418ae605b132a3deb2b753f
+    --sha256: 1vxqcwjg9q37wbwi27y9ba5163lzfz51f1swbi0rp681yg63zvn4
+
 -- -------------------------------------------------------------------------
 -- Constraints tweaking
 
@@ -252,18 +289,19 @@ allow-newer:
     hjsonschema:*
   , hjsonpointer:*
   , cardano-sl-x509:ip
-  , cardano-addresses:aeson
+  , *:aeson
   , size-based:template-haskell
 
 constraints:
-    hedgehog >= 1.0.2
+    hedgehog >= 1.1
   -- QUICK FIX: hedgehog >= 1.1 defines Rec constructor, PlutusIR also defines
   -- Rec constructor, and imports Hedgehog unqualified, leading to ambiguous
   -- reference to Rec.
   -- FIXME: https://input-output.atlassian.net/browse/ADP-1545
-  , hedgehog < 1.1
+  , aeson >= 2
   , hashable < 1.4
   , bimap >= 0.4.0
+  , openapi3 >= 3.2.0
   , libsystemd-journal >= 1.4.4
   , systemd >= 2.3.0
   -- dependency of systemd-2.3.0

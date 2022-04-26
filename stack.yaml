@@ -154,7 +154,7 @@ extra-deps:
       - bech32-th
 
   - git: https://github.com/input-output-hk/cardano-base
-    commit: 41545ba3ac6b3095966316a99883d678b5ab8da8
+    commit: 631cb6cf1fa01ab346233b610a38b3b4cba6e6ab
     subdirs:
       - base-deriving-via
       - binary
@@ -171,10 +171,12 @@ extra-deps:
     commit: f73079303f663e028288f9f4a9e08bcca39a923e
 
   - git: https://github.com/input-output-hk/cardano-ledger
-    commit: 1a9ec4ae9e0b09d54e49b2a40c4ead37edadcce5
+    commit: c415253fff9a5ce9d7575230fc9098bcfee97653
     subdirs:
       - eras/alonzo/impl
       - eras/alonzo/test-suite
+      - eras/babbage/impl
+      - eras/babbage/test-suite
       - eras/byron/chain/executable-spec
       - eras/byron/crypto
       - eras/byron/crypto/test
@@ -189,19 +191,20 @@ extra-deps:
       - libs/cardano-ledger-pretty
       - libs/cardano-protocol-tpraos
       - libs/cardano-data
-      - libs/compact-map
+      - libs/vector-map
       - libs/set-algebra
       - libs/small-steps
       - libs/small-steps-test
       - libs/non-integral
 
   - git: https://github.com/input-output-hk/cardano-node
-    commit: 73f9a746362695dc2cb63ba757fbcabb81733d23
+    commit: 67f30e25f23a7bd5e500e0da2366f8a2ca4b6932
     subdirs:
       - cardano-api
       - cardano-cli
-      - cardano-node
       - cardano-git-rev
+      - cardano-node
+      - cardano-node-chairman
       - trace-dispatcher
       - trace-resources
       - trace-forward
@@ -212,8 +215,13 @@ extra-deps:
       - cardano-prelude
       - cardano-prelude-test
 
-  - git: https://github.com/input-output-hk/cardano-sl-x509
-    commit: 12925934c533b3a6e009b61ede555f8f26bac037
+    # In particular we rely on the code from this PR:
+    # <https://github.com/input-output-hk/iohk-monitoring-framework/pull/622>
+    # being merged.
+    #
+    # NOTE: Also see equivalent comment in cabal.project
+  - git: https://github.com/MELD-labs/cardano-sl-x509
+    commit: 819997049b9cc675b28059d3d6f511d08f934d10
 
   - git: https://github.com/input-output-hk/flat
     commit: ee59880f47ab835dbd73bea0847dab7869fc20d8
@@ -224,26 +232,29 @@ extra-deps:
   - git: https://github.com/input-output-hk/hedgehog-extras
     commit: edf6945007177a638fbeb8802397f3a6f4e47c14
 
+    # In particular we rely on the code from this PR:
+    #  * <https://github.com/input-output-hk/cardano-sl-x509/pull/6>
+    # being merged.
+    #
+    # NOTE: Also see equivalent comment in cabal.project
   - git: https://github.com/input-output-hk/iohk-monitoring-framework
-    commit: 808724ff8a19a33d0ed06f9ef59fbd900b08553c
+    commit: eb7854d1337637b8672af1227b276aa33a658f47
     subdirs:
-      - contra-tracer
-      - iohk-monitoring
-      - plugins/backend-aggregation
-      - plugins/backend-ekg
-      - plugins/backend-monitoring
-      - plugins/backend-trace-forwarder
-      - plugins/scribe-systemd
-      - tracer-transformers
+    - contra-tracer
+    - iohk-monitoring
+    - plugins/backend-aggregation
+    - plugins/backend-ekg
+    - plugins/backend-monitoring
+    - plugins/backend-trace-forwarder
+    - plugins/scribe-systemd
+    - tracer-transformers
 
   - git: https://github.com/shmish111/purescript-bridge.git
     commit: 6a92d7853ea514be8b70bab5e72077bf5a510596
 
   - git: https://github.com/input-output-hk/ouroboros-network
-    commit: 4fac197b6f0d2ff60dc3486c593b68dc00969fbf
+    commit: ea202b7b21983140d1944ccfde8750b891b59699
     subdirs:
-      - io-classes
-      - io-sim
       - monoidal-synchronisation
       - network-mux
       - ouroboros-consensus
@@ -259,17 +270,27 @@ extra-deps:
       - ouroboros-network
       - ouroboros-network-framework
       - ouroboros-network-testing
-      - strict-stm
-      - typed-protocols
-      - typed-protocols-cborg
-      - typed-protocols-examples
       # Extra packages not used by cardano-node but used by cardano-wallet
       - cardano-client
       - ntp-client
       - ouroboros-consensus-mock
 
+  - git: https://github.com/input-output-hk/io-sim
+    commit: 606de33fa2f467d108fb1efb86daeb3348bf34e3
+    subdirs:
+      - io-classes
+      - io-sim
+      - strict-stm
+
+  - git: https://github.com/input-output-hk/typed-protocols
+    commit: 91c3fba44d68439df207796171cd6f867354b76b
+    subdirs:
+      - typed-protocols
+      - typed-protocols-cborg
+      - typed-protocols-examples
+
   - git: https://github.com/input-output-hk/plutus
-    commit: fc5fe94d3d9525d032bcbc79ff0e1ebcfd8ef143
+    commit: fec94223a985e34d3b270460c8f150002f41b85b
     subdirs:
       - plutus-core
       - plutus-ledger-api
@@ -290,3 +311,15 @@ extra-deps:
 
   - git: https://github.com/input-output-hk/Win32-network
     commit: 3825d3abf75f83f406c1f7161883c438dac7277d
+
+  # Until https://github.com/tibbe/ekg-json/pull/12 gets merged with aeson2 support
+  - git: https://github.com/vshabanov/ekg-json
+    commit: 00ebe7211c981686e65730b7144fbf5350462608
+
+  # TODO This is a compatibility shim to make it easier for our library dependencies to
+  # be compatible with both aeson 1 & 2.  Once downstream projects are all upgraded to
+  # work with aeson-2, library dependencies will need to be updated to no longer use
+  # this compatibility shim and have bounds to indicate they work with aeson-2 only.
+  # After this, the dependency to hw-aeson can be dropped.
+  - git: https://github.com/haskell-works/hw-aeson
+    commit: d99d2f3e39a287607418ae605b132a3deb2b753f

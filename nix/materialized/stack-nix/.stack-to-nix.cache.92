@@ -10,82 +10,29 @@
   {
     flags = {};
     package = {
-      specVersion = "2.4";
-      identifier = { name = "ekg-forward"; version = "0.1.0"; };
-      license = "Apache-2.0";
-      copyright = "2021 Input Output (Hong Kong) Ltd.";
-      maintainer = "Denis Shevchenko <denis.shevchenko@iohk.io>";
-      author = "Denis Shevchenko";
-      homepage = "https://github.com/input-output-hk/ekg-forward";
+      specVersion = "1.10";
+      identifier = { name = "plutus-ghc-stub"; version = "8.6.5"; };
+      license = "BSD-3-Clause";
+      copyright = "";
+      maintainer = "glasgow-haskell-users@haskell.org";
+      author = "The GHC Team";
+      homepage = "http://www.haskell.org/ghc/";
       url = "";
-      synopsis = "See README for more info";
-      description = "See README for more info";
+      synopsis = "The GHC API";
+      description = "Stub functionality for the Plutus plugin, for cross compilers that\ndon't have a GHC library installed, like GHCJS\nThis should contain all the types and functions that the Plutus\ncompiler uses.\nFor technical reasons (Cabal), we need to be able to compile the plutus-tx\ncompiler for the host platform, even if we are going to load the plugin\nfrom the build platform libraries.";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."async" or (errorHandler.buildDepError "async"))
+          (hsPkgs."ghc-boot" or (errorHandler.buildDepError "ghc-boot"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."cborg" or (errorHandler.buildDepError "cborg"))
-          (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
-          (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
-          (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
-          (hsPkgs."network" or (errorHandler.buildDepError "network"))
-          (hsPkgs."ouroboros-network-framework" or (errorHandler.buildDepError "ouroboros-network-framework"))
-          (hsPkgs."serialise" or (errorHandler.buildDepError "serialise"))
-          (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
-          (hsPkgs."time" or (errorHandler.buildDepError "time"))
-          (hsPkgs."typed-protocols" or (errorHandler.buildDepError "typed-protocols"))
-          (hsPkgs."typed-protocols-cborg" or (errorHandler.buildDepError "typed-protocols-cborg"))
-          (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
+          (hsPkgs."template-haskell" or (errorHandler.buildDepError "template-haskell"))
           ];
         buildable = true;
         };
-      exes = {
-        "demo-forwarder" = {
-          depends = [
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
-            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
-            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
-            (hsPkgs."text" or (errorHandler.buildDepError "text"))
-            (hsPkgs."time" or (errorHandler.buildDepError "time"))
-            ];
-          buildable = true;
-          };
-        "demo-acceptor" = {
-          depends = [
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
-            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
-            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
-            (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
-            (hsPkgs."text" or (errorHandler.buildDepError "text"))
-            (hsPkgs."time" or (errorHandler.buildDepError "time"))
-            ];
-          buildable = true;
-          };
-        };
-      tests = {
-        "ekg-forward-test" = {
-          depends = [
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
-            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
-            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
-            (hsPkgs."hspec" or (errorHandler.buildDepError "hspec"))
-            (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
-            (hsPkgs."time" or (errorHandler.buildDepError "time"))
-            (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
-            ];
-          buildable = true;
-          };
-        };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/jjas7k78m81qin4ypzmk6j1myw3l5ir8-ekg-forward-297cd9d;
+    src = (pkgs.lib).mkDefault /nix/store/rl1qhlm71lgwqbxw4g0mqgrjfzzfqv7l-plutus-fec9422/stubs/plutus-ghc-stub;
     }

@@ -10,16 +10,16 @@
   {
     flags = {};
     package = {
-      specVersion = "2.4";
-      identifier = { name = "hedgehog-extras"; version = "0.1.0.0"; };
-      license = "Apache-2.0";
-      copyright = "";
+      specVersion = "1.10";
+      identifier = { name = "cardano-sl-x509"; version = "3.0.0"; };
+      license = "MIT";
+      copyright = "2018 IOHK";
       maintainer = "operations@iohk.io";
-      author = "IOHK";
-      homepage = "";
+      author = "IOHK Engineering Team";
+      homepage = "https://github.com/input-output-hk/cardano-sl/x509/README.md";
       url = "";
-      synopsis = "Supplemental library for hedgehog";
-      description = "Supplemental library for hedgehog.";
+      synopsis = "Tool-suite for generating x509 certificates specialized for RSA with SHA-256";
+      description = "See README";
       buildType = "Simple";
       };
     components = {
@@ -27,31 +27,42 @@
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
           (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-          (hsPkgs."aeson-pretty" or (errorHandler.buildDepError "aeson-pretty"))
-          (hsPkgs."async" or (errorHandler.buildDepError "async"))
+          (hsPkgs."asn1-encoding" or (errorHandler.buildDepError "asn1-encoding"))
+          (hsPkgs."asn1-types" or (errorHandler.buildDepError "asn1-types"))
+          (hsPkgs."base64-bytestring" or (errorHandler.buildDepError "base64-bytestring"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."deepseq" or (errorHandler.buildDepError "deepseq"))
+          (hsPkgs."cardano-prelude" or (errorHandler.buildDepError "cardano-prelude"))
+          (hsPkgs."cryptonite" or (errorHandler.buildDepError "cryptonite"))
+          (hsPkgs."data-default-class" or (errorHandler.buildDepError "data-default-class"))
           (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
           (hsPkgs."exceptions" or (errorHandler.buildDepError "exceptions"))
           (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
-          (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
-          (hsPkgs."mmorph" or (errorHandler.buildDepError "mmorph"))
-          (hsPkgs."mtl" or (errorHandler.buildDepError "mtl"))
-          (hsPkgs."network" or (errorHandler.buildDepError "network"))
-          (hsPkgs."process" or (errorHandler.buildDepError "process"))
-          (hsPkgs."resourcet" or (errorHandler.buildDepError "resourcet"))
-          (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
-          (hsPkgs."temporary" or (errorHandler.buildDepError "temporary"))
+          (hsPkgs."hourglass" or (errorHandler.buildDepError "hourglass"))
+          (hsPkgs."ip" or (errorHandler.buildDepError "ip"))
           (hsPkgs."text" or (errorHandler.buildDepError "text"))
-          (hsPkgs."time" or (errorHandler.buildDepError "time"))
-          (hsPkgs."transformers" or (errorHandler.buildDepError "transformers"))
-          (hsPkgs."unliftio" or (errorHandler.buildDepError "unliftio"))
           (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
+          (hsPkgs."wide-word" or (errorHandler.buildDepError "wide-word"))
+          (hsPkgs."x509" or (errorHandler.buildDepError "x509"))
+          (hsPkgs."x509-store" or (errorHandler.buildDepError "x509-store"))
+          (hsPkgs."x509-validation" or (errorHandler.buildDepError "x509-validation"))
           (hsPkgs."yaml" or (errorHandler.buildDepError "yaml"))
-          ] ++ (pkgs.lib).optional (system.isWindows) (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"));
+          ];
         buildable = true;
+        };
+      tests = {
+        "cardano-sl-x509-test" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."cardano-prelude" or (errorHandler.buildDepError "cardano-prelude"))
+            (hsPkgs."cardano-sl-x509" or (errorHandler.buildDepError "cardano-sl-x509"))
+            (hsPkgs."exceptions" or (errorHandler.buildDepError "exceptions"))
+            (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
+            ];
+          buildable = true;
+          };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/v5ky06bax11582i8x13f1sl27mbnylc1-hedgehog-extras-edf6945;
+    src = (pkgs.lib).mkDefault /nix/store/afm7jm0jq6kyv4j762c8asdzwl4kmb9n-cardano-sl-x509-8199970;
     }

@@ -8,67 +8,84 @@
   , config
   , ... }:
   {
-    flags = { demo = false; };
+    flags = {};
     package = {
       specVersion = "2.4";
-      identifier = { name = "Win32-network"; version = "0.1.0.0"; };
+      identifier = { name = "ekg-forward"; version = "0.1.0"; };
       license = "Apache-2.0";
-      copyright = "2019 Input Output (Hong Kong) Ltd.";
-      maintainer = "duncan@well-typed.com, marcin.szamotulski@iohk.io";
-      author = "Duncan Coutts, Marcin Szamotulski";
-      homepage = "";
+      copyright = "2021 Input Output (Hong Kong) Ltd.";
+      maintainer = "Denis Shevchenko <denis.shevchenko@iohk.io>";
+      author = "Denis Shevchenko";
+      homepage = "https://github.com/input-output-hk/ekg-forward";
       url = "";
-      synopsis = "Win32 network API";
-      description = "";
+      synopsis = "See README for more info";
+      description = "See README for more info";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          ] ++ (pkgs.lib).optionals (system.isWindows) [
+          (hsPkgs."async" or (errorHandler.buildDepError "async"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
+          (hsPkgs."cborg" or (errorHandler.buildDepError "cborg"))
+          (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+          (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
+          (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
           (hsPkgs."network" or (errorHandler.buildDepError "network"))
-          (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
+          (hsPkgs."ouroboros-network-framework" or (errorHandler.buildDepError "ouroboros-network-framework"))
+          (hsPkgs."serialise" or (errorHandler.buildDepError "serialise"))
+          (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
+          (hsPkgs."text" or (errorHandler.buildDepError "text"))
+          (hsPkgs."time" or (errorHandler.buildDepError "time"))
+          (hsPkgs."typed-protocols" or (errorHandler.buildDepError "typed-protocols"))
+          (hsPkgs."typed-protocols-cborg" or (errorHandler.buildDepError "typed-protocols-cborg"))
+          (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
           ];
-        libs = (pkgs.lib).optional (system.isWindows) (pkgs."ws2_32" or (errorHandler.sysDepError "ws2_32"));
         buildable = true;
         };
       exes = {
-        "named-pipe-demo" = {
+        "demo-forwarder" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            ] ++ (pkgs.lib).optionals (system.isWindows) [
-            (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
-            (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-            (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
-            (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
+            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
+            (hsPkgs."text" or (errorHandler.buildDepError "text"))
+            (hsPkgs."time" or (errorHandler.buildDepError "time"))
+            ];
+          buildable = true;
+          };
+        "demo-acceptor" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
+            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
+            (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
+            (hsPkgs."text" or (errorHandler.buildDepError "text"))
+            (hsPkgs."time" or (errorHandler.buildDepError "time"))
             ];
           buildable = true;
           };
         };
       tests = {
-        "test" = {
+        "ekg-forward-test" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            ] ++ (pkgs.lib).optionals (system.isWindows) [
-            (hsPkgs."async" or (errorHandler.buildDepError "async"))
-            (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
-            (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-            (hsPkgs."network" or (errorHandler.buildDepError "network"))
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
+            (hsPkgs."ekg-forward" or (errorHandler.buildDepError "ekg-forward"))
+            (hsPkgs."hspec" or (errorHandler.buildDepError "hspec"))
             (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
-            (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
-            (hsPkgs."tasty-hunit" or (errorHandler.buildDepError "tasty-hunit"))
-            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
-            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
-            (hsPkgs."quickcheck-instances" or (errorHandler.buildDepError "quickcheck-instances"))
-            (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
-            (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
+            (hsPkgs."time" or (errorHandler.buildDepError "time"))
+            (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/jlbg3d6rcixbbvhpnh8383yv26l041gp-Win32-network-3825d3a;
+    src = (pkgs.lib).mkDefault /nix/store/jjas7k78m81qin4ypzmk6j1myw3l5ir8-ekg-forward-297cd9d;
     }

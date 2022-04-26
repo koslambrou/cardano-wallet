@@ -10,58 +10,54 @@
   {
     flags = {};
     package = {
-      specVersion = "1.10";
-      identifier = { name = "servant-purescript"; version = "0.9.0.2"; };
-      license = "BSD-3-Clause";
-      copyright = "Copyright: (c) 2016 Robert Klotzner";
-      maintainer = "robert Dot klotzner A T gmx Dot at";
-      author = "Robert Klotzner";
-      homepage = "https://github.com/eskimor/servant-purescript#readme";
+      specVersion = "2.4";
+      identifier = { name = "word-array"; version = "0.1.0.0"; };
+      license = "Apache-2.0";
+      copyright = "";
+      maintainer = "michael.peyton-jones@iohk.io";
+      author = "Zachary Churchill, Michael Peyton Jones";
+      homepage = "https://github.com/plutus";
       url = "";
-      synopsis = "Generate PureScript accessor functions for you servant API";
-      description = "Please see README.md";
+      synopsis = "";
+      description = "Treat integral types as arrays of smaller integral types";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-          (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-          (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
-          (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
-          (hsPkgs."http-types" or (errorHandler.buildDepError "http-types"))
-          (hsPkgs."lens" or (errorHandler.buildDepError "lens"))
-          (hsPkgs."mainland-pretty" or (errorHandler.buildDepError "mainland-pretty"))
-          (hsPkgs."purescript-bridge" or (errorHandler.buildDepError "purescript-bridge"))
-          (hsPkgs."servant" or (errorHandler.buildDepError "servant"))
-          (hsPkgs."servant-foreign" or (errorHandler.buildDepError "servant-foreign"))
-          (hsPkgs."servant-server" or (errorHandler.buildDepError "servant-server"))
-          (hsPkgs."servant-subscriber" or (errorHandler.buildDepError "servant-subscriber"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
+          (hsPkgs."mono-traversable" or (errorHandler.buildDepError "mono-traversable"))
+          (hsPkgs."primitive" or (errorHandler.buildDepError "primitive"))
+          (hsPkgs."deepseq" or (errorHandler.buildDepError "deepseq"))
           ];
         buildable = true;
         };
       tests = {
-        "servant-purescript-test" = {
+        "test" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-            (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-            (hsPkgs."mainland-pretty" or (errorHandler.buildDepError "mainland-pretty"))
-            (hsPkgs."lens" or (errorHandler.buildDepError "lens"))
-            (hsPkgs."purescript-bridge" or (errorHandler.buildDepError "purescript-bridge"))
-            (hsPkgs."servant" or (errorHandler.buildDepError "servant"))
-            (hsPkgs."servant-foreign" or (errorHandler.buildDepError "servant-foreign"))
-            (hsPkgs."servant-purescript" or (errorHandler.buildDepError "servant-purescript"))
-            (hsPkgs."servant-subscriber" or (errorHandler.buildDepError "servant-subscriber"))
-            (hsPkgs."text" or (errorHandler.buildDepError "text"))
+            (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
+            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."vector" or (errorHandler.buildDepError "vector"))
+            (hsPkgs."word-array" or (errorHandler.buildDepError "word-array"))
+            (hsPkgs."mono-traversable" or (errorHandler.buildDepError "mono-traversable"))
+            ];
+          buildable = true;
+          };
+        };
+      benchmarks = {
+        "bench" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."tasty-bench" or (errorHandler.buildDepError "tasty-bench"))
+            (hsPkgs."word-array" or (errorHandler.buildDepError "word-array"))
+            (hsPkgs."primitive" or (errorHandler.buildDepError "primitive"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/wpxma8w4lhg0kpmasqp1iq19br4xzirp-servant-purescript-a761044;
+    src = (pkgs.lib).mkDefault /nix/store/rl1qhlm71lgwqbxw4g0mqgrjfzzfqv7l-plutus-fec9422/word-array;
     }

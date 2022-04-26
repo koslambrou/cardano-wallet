@@ -8,7 +8,7 @@
   , config
   , ... }:
   {
-    flags = { development = false; };
+    flags = { development = false; secp256k1-support = true; };
     package = {
       specVersion = "2.2";
       identifier = { name = "cardano-crypto-tests"; version = "2.0.0"; };
@@ -36,12 +36,13 @@
           (hsPkgs."cryptonite" or (errorHandler.buildDepError "cryptonite"))
           (hsPkgs."formatting" or (errorHandler.buildDepError "formatting"))
           (hsPkgs."nothunks" or (errorHandler.buildDepError "nothunks"))
+          (hsPkgs."pretty-show" or (errorHandler.buildDepError "pretty-show"))
           (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
           (hsPkgs."quickcheck-instances" or (errorHandler.buildDepError "quickcheck-instances"))
           (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
           (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
           (hsPkgs."criterion" or (errorHandler.buildDepError "criterion"))
-          ];
+          ] ++ (pkgs.lib).optional (flags.secp256k1-support) (hsPkgs."secp256k1-haskell" or (errorHandler.buildDepError "secp256k1-haskell"));
         buildable = true;
         };
       tests = {
@@ -52,6 +53,7 @@
             (hsPkgs."cardano-crypto-class" or (errorHandler.buildDepError "cardano-crypto-class"))
             (hsPkgs."cardano-crypto-tests" or (errorHandler.buildDepError "cardano-crypto-tests"))
             (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
+            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
             ];
           buildable = true;
           };
@@ -70,5 +72,5 @@
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/bvppc469jii0bcz5y6mbv9svfi0nf7wi-cardano-base-41545ba/cardano-crypto-tests;
+    src = (pkgs.lib).mkDefault /nix/store/afcb4rsb16b8s4bjzb47x8ck1awygrn7-cardano-base-631cb6c/cardano-crypto-tests;
     }

@@ -10,16 +10,16 @@
   {
     flags = {};
     package = {
-      specVersion = "1.10";
-      identifier = { name = "cardano-sl-x509"; version = "3.0.0"; };
-      license = "MIT";
-      copyright = "2018 IOHK";
+      specVersion = "2.4";
+      identifier = { name = "trace-forward"; version = "0.1.0"; };
+      license = "Apache-2.0";
+      copyright = "2021 Input Output (Hong Kong) Ltd.";
       maintainer = "operations@iohk.io";
-      author = "IOHK Engineering Team";
-      homepage = "https://github.com/input-output-hk/cardano-sl/x509/README.md";
+      author = "IOHK";
+      homepage = "";
       url = "";
-      synopsis = "Tool-suite for generating x509 certificates specialized for RSA with SHA-256";
-      description = "See README";
+      synopsis = "The forwarding protocols library for cardano node.";
+      description = "The library providing typed protocols for forwarding different\ninformation from the cardano node to an external application.";
       buildType = "Simple";
       };
     components = {
@@ -27,42 +27,44 @@
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
           (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-          (hsPkgs."asn1-encoding" or (errorHandler.buildDepError "asn1-encoding"))
-          (hsPkgs."asn1-types" or (errorHandler.buildDepError "asn1-types"))
-          (hsPkgs."base64-bytestring" or (errorHandler.buildDepError "base64-bytestring"))
+          (hsPkgs."async" or (errorHandler.buildDepError "async"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."cardano-prelude" or (errorHandler.buildDepError "cardano-prelude"))
-          (hsPkgs."cryptonite" or (errorHandler.buildDepError "cryptonite"))
-          (hsPkgs."data-default-class" or (errorHandler.buildDepError "data-default-class"))
-          (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
-          (hsPkgs."exceptions" or (errorHandler.buildDepError "exceptions"))
-          (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
-          (hsPkgs."hourglass" or (errorHandler.buildDepError "hourglass"))
-          (hsPkgs."ip" or (errorHandler.buildDepError "ip"))
+          (hsPkgs."cborg" or (errorHandler.buildDepError "cborg"))
+          (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
+          (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+          (hsPkgs."extra" or (errorHandler.buildDepError "extra"))
+          (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
+          (hsPkgs."ouroboros-network-framework" or (errorHandler.buildDepError "ouroboros-network-framework"))
+          (hsPkgs."serialise" or (errorHandler.buildDepError "serialise"))
+          (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
           (hsPkgs."text" or (errorHandler.buildDepError "text"))
-          (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
-          (hsPkgs."wide-word" or (errorHandler.buildDepError "wide-word"))
-          (hsPkgs."x509" or (errorHandler.buildDepError "x509"))
-          (hsPkgs."x509-store" or (errorHandler.buildDepError "x509-store"))
-          (hsPkgs."x509-validation" or (errorHandler.buildDepError "x509-validation"))
-          (hsPkgs."yaml" or (errorHandler.buildDepError "yaml"))
+          (hsPkgs."typed-protocols" or (errorHandler.buildDepError "typed-protocols"))
+          (hsPkgs."typed-protocols-cborg" or (errorHandler.buildDepError "typed-protocols-cborg"))
           ];
         buildable = true;
         };
       tests = {
-        "cardano-sl-x509-test" = {
+        "test" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
+            (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
+            (hsPkgs."io-sim" or (errorHandler.buildDepError "io-sim"))
+            (hsPkgs."ouroboros-network-framework" or (errorHandler.buildDepError "ouroboros-network-framework"))
+            (hsPkgs."trace-forward" or (errorHandler.buildDepError "trace-forward"))
             (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
-            (hsPkgs."cardano-prelude" or (errorHandler.buildDepError "cardano-prelude"))
-            (hsPkgs."cardano-sl-x509" or (errorHandler.buildDepError "cardano-sl-x509"))
-            (hsPkgs."exceptions" or (errorHandler.buildDepError "exceptions"))
-            (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
+            (hsPkgs."serialise" or (errorHandler.buildDepError "serialise"))
+            (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
+            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
+            (hsPkgs."typed-protocols" or (errorHandler.buildDepError "typed-protocols"))
+            (hsPkgs."text" or (errorHandler.buildDepError "text"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/5lcpx8q17x275vgy3b5700vy3c9ga12w-cardano-sl-x509-1292593;
+    src = (pkgs.lib).mkDefault /nix/store/xlg37gxk7i6if4mhh94jf00f0k9i3ij4-cardano-node-67f30e2/trace-forward;
     }

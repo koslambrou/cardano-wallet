@@ -8,32 +8,61 @@
   , config
   , ... }:
   {
-    flags = {};
+    flags = { demo = true; };
     package = {
       specVersion = "1.10";
-      identifier = { name = "typed-protocols-cborg"; version = "0.1.0.0"; };
+      identifier = { name = "ntp-client"; version = "0.0.1"; };
       license = "Apache-2.0";
-      copyright = "2019-2021 Input Output (Hong Kong) Ltd.";
-      maintainer = "alex@well-typed.com, duncan@well-typed.com, marcin.szamotulski@iohk.io";
-      author = "Alexander Vieth, Duncan Coutts, Marcin Szamotulski";
+      copyright = "";
+      maintainer = "";
+      author = "";
       homepage = "";
       url = "";
-      synopsis = "CBOR codecs for typed-protocols";
+      synopsis = "";
       description = "";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
+          (hsPkgs."async" or (errorHandler.buildDepError "async"))
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
+          (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."cborg" or (errorHandler.buildDepError "cborg"))
-          (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
-          (hsPkgs."typed-protocols" or (errorHandler.buildDepError "typed-protocols"))
+          (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+          (hsPkgs."network" or (errorHandler.buildDepError "network"))
+          (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
+          (hsPkgs."time" or (errorHandler.buildDepError "time"))
+          (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
           ];
         buildable = true;
         };
+      exes = {
+        "demo-ntp-client" = {
+          depends = [
+            (hsPkgs."async" or (errorHandler.buildDepError "async"))
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
+            (hsPkgs."ntp-client" or (errorHandler.buildDepError "ntp-client"))
+            ];
+          buildable = if flags.demo then true else false;
+          };
+        };
+      tests = {
+        "test" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
+            (hsPkgs."time" or (errorHandler.buildDepError "time"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
+            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
+            ];
+          buildable = true;
+          };
+        };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/fy9im0ipvv2jsysk65jphamr63h2y23w-ouroboros-network-4fac197/typed-protocols-cborg;
+    src = (pkgs.lib).mkDefault /nix/store/6cy4sc9wvfd8qk2pcxkcjd8ihkczqkx8-ouroboros-network-ea202b7/ntp-client;
     }

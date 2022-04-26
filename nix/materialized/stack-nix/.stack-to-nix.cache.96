@@ -10,8 +10,8 @@
   {
     flags = { systemd = true; };
     package = {
-      specVersion = "3.0";
-      identifier = { name = "cardano-git-rev"; version = "0.1.0.0"; };
+      specVersion = "2.4";
+      identifier = { name = "cardano-config"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
       maintainer = "operations@iohk.io";
@@ -36,5 +36,5 @@
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/xlg37gxk7i6if4mhh94jf00f0k9i3ij4-cardano-node-67f30e2/cardano-git-rev;
+    src = (pkgs.lib).mkDefault /nix/store/w7a7rywf0b49v4y3cp9zhgb8p1hc5hss-cardano-config-1646e91;
     }
