@@ -86,8 +86,9 @@ import Test.Integration.Faucet
     )
 
 import qualified Cardano.BM.Backend.EKGView as EKG
+import Cardano.Wallet.PipeliningStrategy
+    ( variablePipelining )
 import qualified Data.Text as T
-import Cardano.Wallet.PipeliningStrategy (variablePipelining)
 
 -- |
 -- # OVERVIEW

@@ -87,10 +87,7 @@ import Cardano.Wallet.PipeliningStrategy
 import Cardano.Wallet.Primitive.SyncProgress
     ( SyncTolerance )
 import Cardano.Wallet.Primitive.Types
-    ( PoolMetadataSource (..)
-    , Settings (..)
-    , TokenMetadataServer (..)
-    )
+    ( PoolMetadataSource (..), Settings (..), TokenMetadataServer (..) )
 import Cardano.Wallet.Shelley
     ( TracerSeverities
     , Tracers

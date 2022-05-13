@@ -212,11 +212,12 @@ import Ouroboros.Network.Client.Wallet
     ( LSQ (..)
     , LocalStateQueryCmd (..)
     , LocalTxSubmissionCmd (..)
+    , PipeliningStrategy
     , chainSyncFollowTip
     , chainSyncWithBlocks
     , localStateQuery
     , localTxSubmission
-    , send, PipeliningStrategy
+    , send
     )
 import Ouroboros.Network.Driver.Simple
     ( TraceSendRecv, runPeer, runPipelinedPeer )
