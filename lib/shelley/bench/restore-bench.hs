@@ -17,6 +17,9 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-unused-local-binds #-}
+{-# OPTIONS_GHC -Wno-unused-do-bind #-}
+
+{- HLINT ignore "Redundant pure" -}
 
 
 -- | Benchmark measuring how long restoration takes for different wallets.
@@ -354,30 +357,25 @@ cardanoRestoreBench tr c socketFile = do
                 (trMessageText tr)
                 walletTr
                 socketFile
-                np 
+                np
                 vData
                 benchname
                 True
                 (unsafeMkPercentage 1)
 
-
-
-    runBenchmarks
-        [
-        benchRestoreSeqWithOwnership (Proxy @1) VariablePipelining 
-        , benchRestoreSeqWithOwnership (Proxy @1) ConstPipelining 
-        -- , benchRestoreBaseline VariablePipelining
-        -- , benchRestoreBaseline ConstPipelining
-        -- , benchRestoreSeqWithOwnership (Proxy @1)
-        -- , benchRestoreRndWithOwnership (Proxy @1)
+    runBenchmarks $ do
+        pure $ benchRestoreBaseline VariablePipelining
         -- -- We restore /to/ a percentage that is low enough to be fast,
         -- -- but high enough to give an accurate enough indication of the
         -- -- to-100% time.
-        -- , benchRestoreMultipleWallets 1 (unsafeMkPercentage 0.1)
-        -- , benchRestoreMultipleWallets 10 (unsafeMkPercentage 0.01)
-        -- , benchRestoreMultipleWallets 100 (unsafeMkPercentage 0.01)
-        ]
+        pure $ benchRestoreSeqWithOwnership (Proxy @1) VariablePipelining
+        pure $ benchRestoreRndWithOwnership (Proxy @1) VariablePipelining
+        pure $ benchRestoreMultipleWallets 1 (unsafeMkPercentage 0.1) VariablePipelining
+        pure $ benchRestoreMultipleWallets 10 (unsafeMkPercentage 0.01) VariablePipelining
+        pure $ benchRestoreMultipleWallets 100 (unsafeMkPercentage 0.01) VariablePipelining
   where
+    e = (:)
+    list = ($ [])
     walletRnd
         :: Text
         -> (ByronKey 'RootK XPrv -> Int -> s)
@@ -692,8 +690,8 @@ bench_baseline_restoration
   where
     withRestoreEnvironment action =
         withWalletLayerTracer benchName pipeliningStrat traceToDisk $ \progressTrace ->
-            withNetworkLayer 
-                networkTrace 
+            withNetworkLayer
+                networkTrace
                 (pipeliningStrategyFromPredefined pipeliningStrat np)
                 networkId np socket vData sTol $ \nw ->
                     action progressTrace nw
@@ -778,7 +776,7 @@ bench_restoration
     let networkId = networkIdVal proxy
     let tl = newTransactionLayer @k networkId
     let gp = genesisParameters np
-    withNetworkLayer (trMessageText wlTr) (pipeliningStrategyFromPredefined pipeliningStrat np) 
+    withNetworkLayer (trMessageText wlTr) (pipeliningStrategyFromPredefined pipeliningStrat np)
         networkId np socket vData sTol $ \nw' -> do
             let convert = fromCardanoBlock gp
             let nw = convert <$> nw'
@@ -926,8 +924,8 @@ prepareNode
 prepareNode tr proxy socketPath np vData = do
     traceWith tr $ MsgSyncStart proxy
     let networkId = networkIdVal proxy
-    sl <- withNetworkLayer nullTracer 
-            (variablePipelining np) 
+    sl <- withNetworkLayer nullTracer
+            (variablePipelining np)
             networkId np socketPath vData sTol $ \nw' -> do
         let gp = genesisParameters np
         let convert = fromCardanoBlock gp
