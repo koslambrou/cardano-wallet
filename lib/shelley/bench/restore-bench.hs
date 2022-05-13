@@ -363,16 +363,17 @@ cardanoRestoreBench tr c socketFile = do
                 True
                 (unsafeMkPercentage 1)
 
-    runBenchmarks $ do
-        pure $ benchRestoreBaseline VariablePipelining
+    runBenchmarks [
+        benchRestoreBaseline VariablePipelining
         -- -- We restore /to/ a percentage that is low enough to be fast,
         -- -- but high enough to give an accurate enough indication of the
         -- -- to-100% time.
-        pure $ benchRestoreSeqWithOwnership (Proxy @1) VariablePipelining
-        pure $ benchRestoreRndWithOwnership (Proxy @1) VariablePipelining
-        pure $ benchRestoreMultipleWallets 1 (unsafeMkPercentage 0.1) VariablePipelining
-        pure $ benchRestoreMultipleWallets 10 (unsafeMkPercentage 0.01) VariablePipelining
-        pure $ benchRestoreMultipleWallets 100 (unsafeMkPercentage 0.01) VariablePipelining
+        , benchRestoreSeqWithOwnership (Proxy @1) VariablePipelining
+        , benchRestoreRndWithOwnership (Proxy @1) VariablePipelining
+        , benchRestoreMultipleWallets 1 (unsafeMkPercentage 0.1) VariablePipelining
+        , benchRestoreMultipleWallets 10 (unsafeMkPercentage 0.01) VariablePipelining
+        , benchRestoreMultipleWallets 100 (unsafeMkPercentage 0.01) VariablePipelining
+        ]
   where
     e = (:)
     list = ($ [])
