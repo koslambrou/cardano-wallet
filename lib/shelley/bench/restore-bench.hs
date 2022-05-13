@@ -85,8 +85,11 @@ import Cardano.Wallet.Network
     , ChainSyncLog (..)
     , NetworkLayer (..)
     )
-
 import Cardano.Wallet.PipeliningStrategy
+    ( PredefinedPipeliningStrategy (..)
+    , pipeliningStrategyFromPredefined
+    , variablePipelining
+    )
 import Cardano.Wallet.Primitive.AddressDerivation
     ( Depth (..)
     , NetworkDiscriminant (..)
@@ -666,7 +669,7 @@ bench_baseline_restoration
         ( NetworkDiscriminantVal n
         , HasNetworkId n
         )
-    => PipeliningStrat
+    => PredefinedPipeliningStrategy
     -> Proxy n
     -> Tracer IO (BenchmarkLog n)
     -> Trace IO Text
@@ -691,7 +694,7 @@ bench_baseline_restoration
         withWalletLayerTracer benchName pipeliningStrat traceToDisk $ \progressTrace ->
             withNetworkLayer 
                 networkTrace 
-                (stratPipelining pipeliningStrat np)
+                (pipeliningStrategyFromPredefined pipeliningStrat np)
                 networkId np socket vData sTol $ \nw ->
                     action progressTrace nw
       where
@@ -750,7 +753,7 @@ bench_restoration
         , Buildable results
         , ToJSON results
         )
-    => PipeliningStrat
+    => PredefinedPipeliningStrategy
     -> Proxy n
     -> Tracer IO (BenchmarkLog n)
     -> Trace IO Text -- ^ For wallet tracing
@@ -775,7 +778,7 @@ bench_restoration
     let networkId = networkIdVal proxy
     let tl = newTransactionLayer @k networkId
     let gp = genesisParameters np
-    withNetworkLayer (trMessageText wlTr) (stratPipelining pipeliningStrat np) 
+    withNetworkLayer (trMessageText wlTr) (pipeliningStrategyFromPredefined pipeliningStrat np) 
         networkId np socket vData sTol $ \nw' -> do
             let convert = fromCardanoBlock gp
             let nw = convert <$> nw'

@@ -14,6 +14,8 @@ import Cardano.BM.Trace
     ( nullTracer, traceInTVarIO )
 import Cardano.Wallet.Network
     ( NetworkLayer (..) )
+import Cardano.Wallet.PipeliningStrategy
+    ( variablePipelining )
 import Cardano.Wallet.Primitive.SyncProgress
     ( SyncTolerance (..) )
 import Cardano.Wallet.Primitive.Types
@@ -57,7 +59,6 @@ import UnliftIO.STM
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Cardano.Wallet.PipeliningStrategy (variablePipelining)
 
 {-------------------------------------------------------------------------------
                                       Spec

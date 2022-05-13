@@ -396,10 +396,11 @@ chainSyncWithBlocks tr pipeliningStrategy chainFollower =
                     then oneByOne
                     else pipeline 
                         (fromIntegral 
-                            $ min distance 
-                            $ getPipeliningNumber 
-                            $ pipeliningStrategy 
-                            $ NE.last blocks'
+                            . min distance 
+                            . getPipeliningNumber 
+                            . pipeliningStrategy 
+                            . NE.last 
+                            $ blocks'
                         ) 
                         Zero
             clientStIdle strategy

@@ -49,6 +49,7 @@ import Cardano.Wallet.Logging
 import Cardano.Wallet.Network.Ports
     ( portFromURL )
 import Cardano.Wallet.PipeliningStrategy
+    ( variablePipelining )
 import Cardano.Wallet.Primitive.AddressDerivation
     ( NetworkDiscriminant (..) )
 import Cardano.Wallet.Primitive.SyncProgress

@@ -16,7 +16,6 @@ module Main where
 
 import Prelude
 
-import Cardano.Wallet.PipeliningStrategy
 import Cardano.BM.Data.Severity
     ( Severity (..) )
 import Cardano.BM.Data.Tracer
@@ -46,6 +45,8 @@ import Cardano.Wallet.Logging
     ( BracketLog, bracketTracer, stdoutTextTracer, trMessageText )
 import Cardano.Wallet.Network.Ports
     ( portFromURL )
+import Cardano.Wallet.PipeliningStrategy
+    ( variablePipelining )
 import Cardano.Wallet.Primitive.AddressDerivation
     ( NetworkDiscriminant (..) )
 import Cardano.Wallet.Primitive.SyncProgress

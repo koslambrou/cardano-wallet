@@ -1,58 +1,55 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE NumericUnderscores #-}
 
-module Cardano.Wallet.PipeliningStrategy where
+module Cardano.Wallet.PipeliningStrategy
+  ( variablePipelining
+  , pipeliningStrategyFromPredefined
+  , PredefinedPipeliningStrategy (..)
+  )
+where
 
-import Cardano.Wallet.Primitive.Types
-    ( blockHeight, header, NetworkParameters, genesisParameters )
-import Cardano.Wallet.Shelley.Compatibility
-    ( CardanoBlock, StandardCrypto, fromCardanoBlock )
-import Data.List
-    ( find )
-import Data.Quantity
-    ( Quantity (Quantity) )
-import Numeric.Natural
-    ( Natural )
-import Ouroboros.Network.Client.Wallet
-    ( Pipelining (Pipelining), PipeliningStrategy )
 import Prelude
 
-data PipeliningStrat = ConstPipelining | VariablePipelining deriving (Show)
+import Cardano.Wallet.Primitive.Types
+    ( NetworkParameters, blockHeight, genesisParameters, header )
+import Cardano.Wallet.Shelley.Compatibility
+    ( CardanoBlock, StandardCrypto, fromCardanoBlock )
+import Data.Quantity
+    ( Quantity (Quantity) )
+import Data.Word
+    ( Word32 )
+import Ouroboros.Network.Client.Wallet
+    ( Pipelining (Pipelining), PipeliningStrategy )
+
+-- | Pipelining strategies that have been in use
+
+data PredefinedPipeliningStrategy 
+    = ConstPipelining 
+    | VariablePipelining 
+    deriving (Show)
 
 pipeliningsOfStrat
-    :: Num y
-    => PipeliningStrat
-    -> ([(Quantity x y, Natural)], Natural)
-pipeliningsOfStrat ConstPipelining = ([], 1000)
-pipeliningsOfStrat VariablePipelining =
-    ( [ (Quantity 5_200_000, 1000)
-        , (Quantity 6_100_000, 200)
-        , (Quantity 6_500_000, 100)
-        ]
-    , 100
-    )
-
-pipeliningsOfHeight
-    :: (Ord y, Num y)
-    => PipeliningStrat
-    -> Quantity x y
+    :: PredefinedPipeliningStrategy
+    -> Quantity "block" Word32
     -> Pipelining
-pipeliningsOfHeight strat tip =
-    Pipelining $
-        maybe bed snd (find (\(q, _) -> q >= tip) pipelinings)
-    where
-        (pipelinings, bed) = pipeliningsOfStrat strat
+pipeliningsOfStrat ConstPipelining _ = Pipelining 1000
+pipeliningsOfStrat VariablePipelining (Quantity blockNo)
+    | blockNo <= 5_200_000 = Pipelining 1000
+    | blockNo <= 6_100_000 = Pipelining 200
+    | blockNo <= 6_500_000 = Pipelining 100
+    | otherwise            = Pipelining 75
 
 variablePipelining
     :: NetworkParameters
     -> PipeliningStrategy (CardanoBlock StandardCrypto)
-variablePipelining = stratPipelining VariablePipelining
+variablePipelining = pipeliningStrategyFromPredefined VariablePipelining
 
-stratPipelining 
-    :: PipeliningStrat
-    -> NetworkParameters 
+pipeliningStrategyFromPredefined
+    :: PredefinedPipeliningStrategy
+    -> NetworkParameters
     -> PipeliningStrategy (CardanoBlock StandardCrypto)
-stratPipelining strat gp =
-    pipeliningsOfHeight strat
+pipeliningStrategyFromPredefined strat gp =
+    pipeliningsOfStrat strat
         . blockHeight
         . header
         . fromCardanoBlock (genesisParameters gp)
