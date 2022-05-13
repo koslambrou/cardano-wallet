@@ -24,11 +24,11 @@ pipeliningsOfStrat
     -> ([(Quantity x y, Natural)], Natural)
 pipeliningsOfStrat ConstPipelining = ([], 1000)
 pipeliningsOfStrat VariablePipelining =
-    ( [ (Quantity 4_000_000, 1000)
-        , (Quantity 5_000_000, 200)
-        , (Quantity 6_000_000, 100)
+    ( [ (Quantity 5_200_000, 1000)
+        , (Quantity 6_100_000, 200)
+        , (Quantity 6_500_000, 100)
         ]
-    , 50
+    , 100
     )
 
 pipeliningsOfHeight

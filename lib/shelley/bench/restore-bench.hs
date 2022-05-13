@@ -351,7 +351,7 @@ cardanoRestoreBench tr c socketFile = do
                 (trMessageText tr)
                 walletTr
                 socketFile
-                np
+                np 
                 vData
                 benchname
                 True
@@ -361,10 +361,10 @@ cardanoRestoreBench tr c socketFile = do
 
     runBenchmarks
         [
-        benchRestoreBaseline VariablePipelining
-        ,  benchRestoreBaseline ConstPipelining
-        , benchRestoreSeqWithOwnership (Proxy @0) VariablePipelining 
-        , benchRestoreSeqWithOwnership (Proxy @0) ConstPipelining 
+        benchRestoreSeqWithOwnership (Proxy @1) VariablePipelining 
+        , benchRestoreSeqWithOwnership (Proxy @1) ConstPipelining 
+        -- , benchRestoreBaseline VariablePipelining
+        -- , benchRestoreBaseline ConstPipelining
         -- , benchRestoreSeqWithOwnership (Proxy @1)
         -- , benchRestoreRndWithOwnership (Proxy @1)
         -- -- We restore /to/ a percentage that is low enough to be fast,
