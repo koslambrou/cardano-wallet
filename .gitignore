@@ -49,3 +49,11 @@ lib/shelley/test/data/balanceTx/**/actual
 ### Docs build
 /_build/
 .vscode/settings.json
+ignore-me
+baseline.ConstPipelining.timelog
+baseline.json
+baseline.VariablePipelining.timelog
+block ingestion.svg
+blocks-throughput.svg
+restore.ps
+restore.svg

@@ -24,6 +24,8 @@ module Ouroboros.Network.Client.Wallet
 
       -- * ChainSyncWithBlocks
     , chainSyncWithBlocks
+    , Pipelining (..)
+    , PipeliningStrategy
 
       -- * LocalTxSubmission
     , LocalTxSubmissionCmd (..)
@@ -225,6 +227,12 @@ chainSyncFollowTip toCardanoEra onTipUpdate =
 type RequestNextStrategy m n block
     = P.ClientPipelinedStIdle n block (Point block) (Tip block) m Void
 
+-- | Number of blocks to pipeline
+newtype Pipelining = Pipelining {getPipeliningNumber :: Natural}
+
+-- | mapping from last ingested block to the next pipeline number
+type PipeliningStrategy block = block -> Pipelining
+
 -- | Helper type for the different ways we handle rollbacks.
 --
 -- Helps remove some boilerplate.
@@ -278,9 +286,10 @@ data LocalRollbackResult block
 chainSyncWithBlocks
     :: forall m block. (Monad m, MonadSTM m, MonadThrow m, HasHeader block)
     => Tracer m (ChainSyncLog block (Point block))
+    -> PipeliningStrategy block 
     -> ChainFollower m (Point block) (Tip block) (NonEmpty block)
     -> ChainSyncClientPipelined block (Point block) (Tip block) m Void
-chainSyncWithBlocks tr chainFollower =
+chainSyncWithBlocks tr pipeliningStrategy chainFollower =
     ChainSyncClientPipelined clientStNegotiateIntersection
   where
     -- Return the _number of slots between two tips.
@@ -371,7 +380,7 @@ chainSyncWithBlocks tr chainFollower =
         P.SendMsgRequestNextPipelined $ pipeline goal (Succ n)
 
     collectResponses
-        :: [block]
+        ::  [block]
         -> Nat n
         -> P.ClientStNext n block (Point block) (Tip block) m Void
     collectResponses blocks Zero = P.ClientStNext
@@ -381,12 +390,18 @@ chainSyncWithBlocks tr chainFollower =
             let blocks' = NE.reverse (block :| blocks)
             traceWith tr $ MsgChainRollForward blocks' (getTipPoint tip)
             handleRollforward blocks' tip
-
             let distance = tipDistance (blockNo block) tip
             traceWith tr $ MsgTipDistance distance
             let strategy = if distance <= 1
                     then oneByOne
-                    else pipeline (fromIntegral $ min distance 1000) Zero
+                    else pipeline 
+                        (fromIntegral 
+                            $ min distance 
+                            $ getPipeliningNumber 
+                            $ pipeliningStrategy 
+                            $ NE.last blocks'
+                        ) 
+                        Zero
             clientStIdle strategy
 
         , P.recvMsgRollBackward = \point tip -> do

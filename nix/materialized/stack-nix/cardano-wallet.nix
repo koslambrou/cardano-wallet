@@ -107,6 +107,7 @@
           ];
         buildable = true;
         modules = [
+          "Cardano/Wallet/PipeliningStrategy"
           "Cardano/Wallet/Byron/Compatibility"
           "Cardano/Wallet/Shelley"
           "Cardano/Wallet/Shelley/Api/Server"

@@ -48,6 +48,7 @@ import Cardano.Wallet.Logging
     ( trMessage )
 import Cardano.Wallet.Network.Ports
     ( portFromURL )
+import Cardano.Wallet.PipeliningStrategy
 import Cardano.Wallet.Primitive.AddressDerivation
     ( NetworkDiscriminant (..) )
 import Cardano.Wallet.Primitive.SyncProgress
@@ -474,6 +475,7 @@ withShelleyServer tracers action = do
         serveWallet
             (NodeSource conn vData)
             np
+            (variablePipelining np)
             (SomeNetworkDiscriminant $ Proxy @'Mainnet)
             tracers
             (SyncTolerance 10)

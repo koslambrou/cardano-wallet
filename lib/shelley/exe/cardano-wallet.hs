@@ -82,10 +82,15 @@ import Cardano.Wallet.Api.Types
     ( ApiStakePool )
 import Cardano.Wallet.Logging
     ( trMessage, transformTextTrace )
+import Cardano.Wallet.PipeliningStrategy
+    ( variablePipelining )
 import Cardano.Wallet.Primitive.SyncProgress
     ( SyncTolerance )
 import Cardano.Wallet.Primitive.Types
-    ( PoolMetadataSource (..), Settings (..), TokenMetadataServer (..) )
+    ( PoolMetadataSource (..)
+    , Settings (..)
+    , TokenMetadataServer (..)
+    )
 import Cardano.Wallet.Shelley
     ( TracerSeverities
     , Tracers
@@ -252,6 +257,7 @@ cmdServe = command "serve" $ info (helper <*> helper' <*> cmd) $
             exitWith =<< serveWallet
                 blockchainSource
                 netParams
+                (variablePipelining netParams)
                 discriminant
                 tracers
                 sTolerance

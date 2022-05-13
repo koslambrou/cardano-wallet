@@ -16,6 +16,7 @@ module Main where
 
 import Prelude
 
+import Cardano.Wallet.PipeliningStrategy
 import Cardano.BM.Data.Severity
     ( Severity (..) )
 import Cardano.BM.Data.Tracer
@@ -341,6 +342,7 @@ specWithServer testDir (tr, tracers) = aroundAll withContext
             serveWallet
                 (NodeSource conn vData)
                 gp
+                (variablePipelining gp)
                 (SomeNetworkDiscriminant $ Proxy @'Mainnet)
                 tracers
                 (SyncTolerance 10)
