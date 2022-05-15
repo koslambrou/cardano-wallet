@@ -36,8 +36,8 @@ pipeliningsOfStrat ConstPipelining _ = Pipelining 1000
 pipeliningsOfStrat VariablePipelining (Quantity blockNo)
     | blockNo <= 5_200_000 = Pipelining 1000
     | blockNo <= 6_100_000 = Pipelining 200
-    | blockNo <= 6_500_000 = Pipelining 100
-    | otherwise            = Pipelining 75
+    | blockNo <= 6_500_000 = Pipelining 125
+    | otherwise            = Pipelining 100
 
 variablePipelining
     :: NetworkParameters
