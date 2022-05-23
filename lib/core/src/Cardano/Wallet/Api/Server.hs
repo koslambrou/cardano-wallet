@@ -353,7 +353,7 @@ import Cardano.Wallet.DB
 import Cardano.Wallet.DB.Sqlite.AddressBook
     ( AddressBookIso )
 import Cardano.Wallet.Network
-    ( NetworkLayer, fetchRewardAccountBalances, timeInterpreter )
+    ( NetworkLayer, eraHistory, fetchRewardAccountBalances, timeInterpreter )
 import Cardano.Wallet.Primitive.AddressDerivation
     ( DelegationAddress (..)
     , Depth (..)
@@ -450,7 +450,6 @@ import Cardano.Wallet.Primitive.Slotting
     , neverFails
     , ongoingSlotAt
     , slotToUTCTime
-    , snapshot
     , timeOfEpoch
     , toSlotId
     , unsafeExtendSafeZone
@@ -2534,8 +2533,6 @@ constructTransaction ctx genChange knownPools getPoolStatus (ApiT wid) body = do
             . Map.toList
             . foldr (uncurry (Map.insertWith (<>))) Map.empty
 
--- TODO: Most of the body of this function should really belong to
--- Cardano.Wallet to keep the Api.Server module free of business logic!
 balanceTransaction
     :: forall ctx s k (n :: NetworkDiscriminant).
         ( ctx ~ ApiLayer s k
@@ -2553,15 +2550,18 @@ balanceTransaction ctx genChange (ApiT wid) body = do
     let nodePParams = fromJust $ W.currentNodeProtocolParameters pp
     withWorkerCtx ctx wid liftE liftE $ \wrk -> do
         wallet <- liftHandler $ W.readWalletUTxOIndex @_ @s @k wrk wid
-        ti <- liftIO $ snapshot $ timeInterpreter $ ctx ^. networkLayer
+        eh <- liftIO $ eraHistory $ ctx ^. networkLayer
 
         let mkPartialTx
-                :: forall era. Cardano.Tx era
+                :: forall era. Cardano.IsShelleyBasedEra era => Cardano.Tx era
                 -> W.PartialTx era
             mkPartialTx tx = W.PartialTx
                     tx
-                    (fromExternalInput <$> body ^. #inputs)
+                    (convertToCardano $ fromExternalInput <$> body ^. #inputs)
                     (fromApiRedeemer <$> body ^. #redeemers)
+              where
+                convertToCardano xs =
+                    toCardanoUTxO (wrk ^. W.transactionLayer @k) mempty xs
 
         let balanceTx
                 :: forall era. Cardano.IsShelleyBasedEra era
@@ -2572,7 +2572,7 @@ balanceTransaction ctx genChange (ApiT wid) body = do
                     wrk
                     genChange
                     (pp, nodePParams)
-                    ti
+                    eh
                     wallet
                     partialTx
 
@@ -4522,7 +4522,12 @@ instance IsServerError ErrBalanceTx where
                 [ "I was not able to balance the transaction without exceeding"
                 , "the maximum transaction size."
                 ]
-
+        ErrBalanceTxConflictingInputResolution ->
+            apiError err403 ConflictingInputResolution $ mconcat
+                [ "At least one of the inputs provided has a different value "
+                , "or different address from that recorded in the wallet UTxO. "
+                , "Please ensure it is correct."
+                ]
 
 instance IsServerError ErrRemoveTx where
     toServerError = \case
