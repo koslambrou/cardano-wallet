@@ -395,7 +395,6 @@ test-suite unit
     , random
     , retry
     , safe
-    , scrypt
     , servant
     , servant-server
     , should-not-typecheck
@@ -420,6 +419,9 @@ test-suite unit
     , wai
     , wai-extra
     , warp
+  if (flag(scrypt))
+    cpp-options: -DHAVE_SCRYPT
+    build-depends: scrypt
   build-tool-depends:
       hspec-discover:hspec-discover
   type:
