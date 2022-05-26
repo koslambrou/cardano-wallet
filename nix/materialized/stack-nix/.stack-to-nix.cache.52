@@ -8,17 +8,17 @@
   , config
   , ... }:
   {
-    flags = {};
+    flags = { development = false; };
     package = {
       specVersion = "1.10";
-      identifier = { name = "purescript-bridge"; version = "0.13.1.0"; };
+      identifier = { name = "goblins"; version = "0.2.0.0"; };
       license = "BSD-3-Clause";
       copyright = "";
-      maintainer = "robert . klotzner A T gmx . at";
-      author = "Robert Klotzner";
-      homepage = "";
+      maintainer = "nick@topos.org.uk";
+      author = "Nicholas Clarke";
+      homepage = "https://github.com/input-output-hk/goblins";
       url = "";
-      synopsis = "Generate PureScript data types from Haskell data types";
+      synopsis = "Genetic algorithm based randomised testing";
       description = "";
       buildType = "Simple";
       };
@@ -26,33 +26,39 @@
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
+          (hsPkgs."bimap" or (errorHandler.buildDepError "bimap"))
+          (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
+          (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
           (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-          (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
-          (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
-          (hsPkgs."mtl" or (errorHandler.buildDepError "mtl"))
-          (hsPkgs."lens" or (errorHandler.buildDepError "lens"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
+          (hsPkgs."extra" or (errorHandler.buildDepError "extra"))
+          (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
+          (hsPkgs."microlens" or (errorHandler.buildDepError "microlens"))
+          (hsPkgs."microlens-mtl" or (errorHandler.buildDepError "microlens-mtl"))
+          (hsPkgs."microlens-th" or (errorHandler.buildDepError "microlens-th"))
+          (hsPkgs."mmorph" or (errorHandler.buildDepError "mmorph"))
+          (hsPkgs."monad-control" or (errorHandler.buildDepError "monad-control"))
+          (hsPkgs."moo" or (errorHandler.buildDepError "moo"))
+          (hsPkgs."random" or (errorHandler.buildDepError "random"))
+          (hsPkgs."template-haskell" or (errorHandler.buildDepError "template-haskell"))
+          (hsPkgs."th-utilities" or (errorHandler.buildDepError "th-utilities"))
           (hsPkgs."transformers" or (errorHandler.buildDepError "transformers"))
-          (hsPkgs."wl-pprint-text" or (errorHandler.buildDepError "wl-pprint-text"))
-          (hsPkgs."generic-deriving" or (errorHandler.buildDepError "generic-deriving"))
+          (hsPkgs."tree-diff" or (errorHandler.buildDepError "tree-diff"))
+          (hsPkgs."typerep-map" or (errorHandler.buildDepError "typerep-map"))
           ];
         buildable = true;
         };
       tests = {
-        "tests" = {
+        "goblin-test" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-            (hsPkgs."purescript-bridge" or (errorHandler.buildDepError "purescript-bridge"))
-            (hsPkgs."text" or (errorHandler.buildDepError "text"))
-            (hsPkgs."wl-pprint-text" or (errorHandler.buildDepError "wl-pprint-text"))
-            (hsPkgs."hspec" or (errorHandler.buildDepError "hspec"))
-            (hsPkgs."hspec-expectations-pretty-diff" or (errorHandler.buildDepError "hspec-expectations-pretty-diff"))
+            (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
+            (hsPkgs."goblins" or (errorHandler.buildDepError "goblins"))
+            (hsPkgs."temporary" or (errorHandler.buildDepError "temporary"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/zvdx2gdavxs4rs5b1lnhhrk63ps5nxdq-purescript-bridge-6a92d78;
+    src = (pkgs.lib).mkDefault /nix/store/4hpdshkfiqw93mp84jsnws4p3826iv4r-goblins-cde90a2;
     }

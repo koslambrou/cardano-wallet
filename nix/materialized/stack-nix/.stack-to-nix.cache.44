@@ -10,46 +10,67 @@
   {
     flags = {};
     package = {
-      specVersion = "2.4";
-      identifier = { name = "trace-resources"; version = "0.1.0.0"; };
-      license = "NONE";
-      copyright = "2021 IOHK";
+      specVersion = "3.0";
+      identifier = { name = "cardano-node-chairman"; version = "1.33.0"; };
+      license = "Apache-2.0";
+      copyright = "";
       maintainer = "operations@iohk.io";
-      author = "Juergen Nicklisch-Franken";
+      author = "IOHK";
       homepage = "";
       url = "";
-      synopsis = "Package for tracing resources for linux, mac and windows";
-      description = "";
+      synopsis = "";
+      description = "The cardano full node";
       buildType = "Simple";
       };
     components = {
-      "library" = {
-        depends = [
-          (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."trace-dispatcher" or (errorHandler.buildDepError "trace-dispatcher"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
-          (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-          ] ++ (if system.isWindows
-          then [ (hsPkgs."Win32" or (errorHandler.buildDepError "Win32")) ]
-          else [ (hsPkgs."unix" or (errorHandler.buildDepError "unix")) ]);
-        buildable = true;
-        };
-      tests = {
-        "trace-resources-test" = {
+      exes = {
+        "cardano-node-chairman" = {
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."trace-dispatcher" or (errorHandler.buildDepError "trace-dispatcher"))
+            (hsPkgs."cardano-api" or (errorHandler.buildDepError "cardano-api"))
+            (hsPkgs."cardano-git-rev" or (errorHandler.buildDepError "cardano-git-rev"))
+            (hsPkgs."cardano-ledger-byron" or (errorHandler.buildDepError "cardano-ledger-byron"))
+            (hsPkgs."cardano-node" or (errorHandler.buildDepError "cardano-node"))
+            (hsPkgs."cardano-prelude" or (errorHandler.buildDepError "cardano-prelude"))
+            (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
+            (hsPkgs."contra-tracer" or (errorHandler.buildDepError "contra-tracer"))
+            (hsPkgs."io-classes" or (errorHandler.buildDepError "io-classes"))
+            (hsPkgs."optparse-applicative-fork" or (errorHandler.buildDepError "optparse-applicative-fork"))
+            (hsPkgs."ouroboros-consensus" or (errorHandler.buildDepError "ouroboros-consensus"))
+            (hsPkgs."ouroboros-network" or (errorHandler.buildDepError "ouroboros-network"))
+            (hsPkgs."strict-stm" or (errorHandler.buildDepError "strict-stm"))
             (hsPkgs."text" or (errorHandler.buildDepError "text"))
-            (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."time" or (errorHandler.buildDepError "time"))
+            ];
+          buildable = true;
+          };
+        };
+      tests = {
+        "chairman-tests" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."cardano-testnet" or (errorHandler.buildDepError "cardano-testnet"))
+            (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
+            (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
+            (hsPkgs."hedgehog" or (errorHandler.buildDepError "hedgehog"))
+            (hsPkgs."hedgehog-extras" or (errorHandler.buildDepError "hedgehog-extras"))
+            (hsPkgs."network" or (errorHandler.buildDepError "network"))
+            (hsPkgs."process" or (errorHandler.buildDepError "process"))
+            (hsPkgs."random" or (errorHandler.buildDepError "random"))
+            (hsPkgs."resourcet" or (errorHandler.buildDepError "resourcet"))
             (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
-            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
-            (hsPkgs."trace-resources" or (errorHandler.buildDepError "trace-resources"))
+            (hsPkgs."tasty-hedgehog" or (errorHandler.buildDepError "tasty-hedgehog"))
+            (hsPkgs."unliftio" or (errorHandler.buildDepError "unliftio"))
+            ];
+          build-tools = [
+            (hsPkgs.buildPackages.cardano-node.components.exes.cardano-node or (pkgs.buildPackages.cardano-node or (errorHandler.buildToolDepError "cardano-node:cardano-node")))
+            (hsPkgs.buildPackages.cardano-cli.components.exes.cardano-cli or (pkgs.buildPackages.cardano-cli or (errorHandler.buildToolDepError "cardano-cli:cardano-cli")))
+            (hsPkgs.buildPackages.cardano-node-chairman.components.exes.cardano-node-chairman or (pkgs.buildPackages.cardano-node-chairman or (errorHandler.buildToolDepError "cardano-node-chairman:cardano-node-chairman")))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/70n5w5wrk2ywb9zm22jx8x0979gmi5db-cardano-node-65422ff/trace-resources;
+    src = (pkgs.lib).mkDefault /nix/store/xlg37gxk7i6if4mhh94jf00f0k9i3ij4-cardano-node-67f30e2/cardano-node-chairman;
     }

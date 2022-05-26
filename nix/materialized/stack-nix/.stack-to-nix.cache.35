@@ -11,14 +11,14 @@
     flags = {};
     package = {
       specVersion = "2.2";
-      identifier = { name = "set-algebra"; version = "0.1.0.0"; };
+      identifier = { name = "vector-map"; version = "0.1.0.0"; };
       license = "Apache-2.0";
       copyright = "";
       maintainer = "formal.methods@iohk.io";
       author = "IOHK Formal Methods Team";
       homepage = "https://github.com/input-output-hk/cardano-legder-specs";
       url = "";
-      synopsis = "Set Algebra";
+      synopsis = "An efficient VMap that is backed by two vectors: one for keys and another for values.";
       description = "";
       buildType = "Simple";
       };
@@ -26,10 +26,13 @@
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."ansi-wl-pprint" or (errorHandler.buildDepError "ansi-wl-pprint"))
-          (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."cardano-data" or (errorHandler.buildDepError "cardano-data"))
+          (hsPkgs."cardano-binary" or (errorHandler.buildDepError "cardano-binary"))
           (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
+          (hsPkgs."deepseq" or (errorHandler.buildDepError "deepseq"))
+          (hsPkgs."nothunks" or (errorHandler.buildDepError "nothunks"))
+          (hsPkgs."primitive" or (errorHandler.buildDepError "primitive"))
+          (hsPkgs."vector" or (errorHandler.buildDepError "vector"))
+          (hsPkgs."vector-algorithms" or (errorHandler.buildDepError "vector-algorithms"))
           ];
         buildable = true;
         };
@@ -38,16 +41,28 @@
           depends = [
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
             (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-            (hsPkgs."set-algebra" or (errorHandler.buildDepError "set-algebra"))
             (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
-            (hsPkgs."tasty-hunit" or (errorHandler.buildDepError "tasty-hunit"))
             (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
-            (hsPkgs."cardano-data" or (errorHandler.buildDepError "cardano-data"))
+            (hsPkgs."vector-map" or (errorHandler.buildDepError "vector-map"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."quickcheck-classes-base" or (errorHandler.buildDepError "quickcheck-classes-base"))
+            ];
+          buildable = true;
+          };
+        };
+      benchmarks = {
+        "bench" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."criterion" or (errorHandler.buildDepError "criterion"))
+            (hsPkgs."vector-map" or (errorHandler.buildDepError "vector-map"))
+            (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
+            (hsPkgs."random" or (errorHandler.buildDepError "random"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/y5zp7ycn9ypz1z2xak67wkdw5s6isc2h-cardano-ledger-1db68a3/libs/set-algebra;
+    src = (pkgs.lib).mkDefault /nix/store/208wi580npbvkypik9z8w6s04yxp03jv-cardano-ledger-c415253/libs/vector-map;
     }

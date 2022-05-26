@@ -154,54 +154,56 @@ extra-deps:
       - bech32-th
 
   - git: https://github.com/input-output-hk/cardano-base
-    commit: 41545ba3ac6b3095966316a99883d678b5ab8da8
+    commit: 631cb6cf1fa01ab346233b610a38b3b4cba6e6ab
     subdirs:
-      - base-deriving-via
-      - binary
-      - binary/test
-      - cardano-crypto-class
-      - cardano-crypto-praos
-      - cardano-crypto-tests
-      - orphans-deriving-via
-      - slotting
-      - strict-containers
-      - measures
+    - base-deriving-via
+    - binary
+    - binary/test
+    - cardano-crypto-class
+    - cardano-crypto-praos
+    - cardano-crypto-tests
+    - orphans-deriving-via
+    - slotting
+    - strict-containers
+    - measures
 
   - git: https://github.com/input-output-hk/cardano-crypto
     commit: f73079303f663e028288f9f4a9e08bcca39a923e
 
   - git: https://github.com/input-output-hk/cardano-ledger
-    commit: 1db68a3ec0a2dcb5751004beb22b906162474f23
+    commit: c415253fff9a5ce9d7575230fc9098bcfee97653
     subdirs:
-      - eras/alonzo/impl
-      - eras/alonzo/test-suite
-      - eras/byron/chain/executable-spec
-      - eras/byron/crypto
-      - eras/byron/crypto/test
-      - eras/byron/ledger/executable-spec
-      - eras/byron/ledger/impl
-      - eras/byron/ledger/impl/test
-      - eras/shelley/impl
-      - eras/shelley/test-suite
-      - eras/shelley-ma/impl
-      - eras/shelley-ma/test-suite
-      - libs/cardano-ledger-core
-      - libs/cardano-ledger-pretty
-      - libs/cardano-protocol-tpraos
-      - libs/cardano-data
-      - libs/compact-map
-      - libs/set-algebra
-      - libs/small-steps
-      - libs/small-steps-test
-      - libs/non-integral
+    - eras/alonzo/impl
+    - eras/alonzo/test-suite
+    - eras/babbage/impl
+    - eras/byron/chain/executable-spec
+    - eras/byron/crypto
+    - eras/byron/crypto/test
+    - eras/byron/ledger/executable-spec
+    - eras/byron/ledger/impl
+    - eras/byron/ledger/impl/test
+    - eras/shelley/impl
+    - eras/shelley/test-suite
+    - eras/shelley-ma/impl
+    - eras/shelley-ma/test-suite
+    - libs/cardano-ledger-core
+    - libs/cardano-ledger-pretty
+    - libs/cardano-protocol-tpraos
+    - libs/cardano-data
+    - libs/vector-map
+    - libs/set-algebra
+    - libs/small-steps
+    - libs/small-steps-test
+    - libs/non-integral
 
   - git: https://github.com/input-output-hk/cardano-node
-    commit: 65422ff373f2f88a563afa746a9a16d211ffdc7c
+    commit: 67f30e25f23a7bd5e500e0da2366f8a2ca4b6932
     subdirs:
       - cardano-api
+      - cardano-git-rev
       - cardano-cli
       - cardano-node
-      - cardano-git-rev
+      - cardano-node-chairman
       - trace-dispatcher
       - trace-resources
       - trace-forward
@@ -249,11 +251,15 @@ extra-deps:
     - plugins/scribe-systemd
     - tracer-transformers
 
+  - git: https://github.com/input-output-hk/ekg-forward
+    commit: 297cd9db5074339a2fb2e5ae7d0780debb670c63
+
+  - git: https://github.com/input-output-hk/cardano-config
+    commit: 1646e9167fab36c0bff82317743b96efa2d3adaa
+
   - git: https://github.com/input-output-hk/ouroboros-network
-    commit: ad47441e9e399495579d7dd05ccaf96b46a487b2
+    commit: ea202b7b21983140d1944ccfde8750b891b59699
     subdirs:
-    - io-classes
-    - io-sim
     - monoidal-synchronisation
     - network-mux
     - ouroboros-consensus
@@ -269,17 +275,27 @@ extra-deps:
     - ouroboros-network
     - ouroboros-network-framework
     - ouroboros-network-testing
-    - strict-stm
-    - typed-protocols
-    - typed-protocols-cborg
-    - typed-protocols-examples
     # Extra packages not used by cardano-node but used by cardano-wallet
     - cardano-client
     - ntp-client
     - ouroboros-consensus-mock
 
+  - git: https://github.com/input-output-hk/io-sim
+    commit: 606de33fa2f467d108fb1efb86daeb3348bf34e3
+    subdirs:
+      - io-classes
+      - io-sim
+      - strict-stm
+
+  - git: https://github.com/input-output-hk/typed-protocols
+    commit: 91c3fba44d68439df207796171cd6f867354b76b
+    subdirs:
+      - typed-protocols
+      - typed-protocols-cborg
+      - typed-protocols-examples
+
   - git: https://github.com/input-output-hk/plutus
-    commit: ccf5bcb99ffe054dc8cd5626723f64e02708dbae
+    commit: fec94223a985e34d3b270460c8f150002f41b85b
     subdirs:
       - plutus-core
       - plutus-ledger-api
@@ -288,9 +304,6 @@ extra-deps:
       - stubs/plutus-ghc-stub
       - prettyprinter-configurable
       - word-array
-
-  - git: https://github.com/input-output-hk/cardano-config
-    commit: 1646e9167fab36c0bff82317743b96efa2d3adaa
 
   - git: https://github.com/shmish111/servant-purescript.git
     commit: a76104490499aa72d40c2790d10e9383e0dbde63

@@ -8,67 +8,65 @@
   , config
   , ... }:
   {
-    flags = { demo = false; };
+    flags = {};
     package = {
       specVersion = "2.4";
-      identifier = { name = "Win32-network"; version = "0.1.0.0"; };
-      license = "Apache-2.0";
-      copyright = "2019 Input Output (Hong Kong) Ltd.";
-      maintainer = "duncan@well-typed.com, marcin.szamotulski@iohk.io";
-      author = "Duncan Coutts, Marcin Szamotulski";
+      identifier = {
+        name = "prettyprinter-configurable";
+        version = "0.1.0.0";
+        };
+      license = "NONE";
+      copyright = "";
+      maintainer = "plutus@iohk.io";
+      author = "David Luposchainsky, effectfully";
       homepage = "";
       url = "";
-      synopsis = "Win32 network API";
+      synopsis = "";
       description = "";
-      buildType = "Simple";
+      buildType = "Custom";
+      setup-depends = [
+        (hsPkgs.buildPackages.base or (pkgs.buildPackages.base or (errorHandler.setupDepError "base")))
+        (hsPkgs.buildPackages.Cabal or (pkgs.buildPackages.Cabal or (errorHandler.setupDepError "Cabal")))
+        (hsPkgs.buildPackages.cabal-doctest or (pkgs.buildPackages.cabal-doctest or (errorHandler.setupDepError "cabal-doctest")))
+        ];
       };
     components = {
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          ] ++ (pkgs.lib).optionals (system.isWindows) [
-          (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."network" or (errorHandler.buildDepError "network"))
-          (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
+          (hsPkgs."prettyprinter" or (errorHandler.buildDepError "prettyprinter"))
+          (hsPkgs."mtl" or (errorHandler.buildDepError "mtl"))
+          (hsPkgs."text" or (errorHandler.buildDepError "text"))
+          (hsPkgs."microlens" or (errorHandler.buildDepError "microlens"))
           ];
-        libs = (pkgs.lib).optional (system.isWindows) (pkgs."ws2_32" or (errorHandler.sysDepError "ws2_32"));
         buildable = true;
         };
-      exes = {
-        "named-pipe-demo" = {
-          depends = [
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            ] ++ (pkgs.lib).optionals (system.isWindows) [
-            (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
-            (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-            (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
-            (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
-            ];
-          buildable = true;
-          };
-        };
       tests = {
-        "test" = {
+        "prettyprinter-configurable-test" = {
           depends = [
+            (hsPkgs."prettyprinter-configurable" or (errorHandler.buildDepError "prettyprinter-configurable"))
             (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            ] ++ (pkgs.lib).optionals (system.isWindows) [
-            (hsPkgs."async" or (errorHandler.buildDepError "async"))
-            (hsPkgs."binary" or (errorHandler.buildDepError "binary"))
-            (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-            (hsPkgs."network" or (errorHandler.buildDepError "network"))
-            (hsPkgs."stm" or (errorHandler.buildDepError "stm"))
+            (hsPkgs."prettyprinter" or (errorHandler.buildDepError "prettyprinter"))
+            (hsPkgs."text" or (errorHandler.buildDepError "text"))
+            (hsPkgs."megaparsec" or (errorHandler.buildDepError "megaparsec"))
+            (hsPkgs."parser-combinators" or (errorHandler.buildDepError "parser-combinators"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."quickcheck-text" or (errorHandler.buildDepError "quickcheck-text"))
             (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
             (hsPkgs."tasty-hunit" or (errorHandler.buildDepError "tasty-hunit"))
             (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
-            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
-            (hsPkgs."quickcheck-instances" or (errorHandler.buildDepError "quickcheck-instances"))
-            (hsPkgs."Win32" or (errorHandler.buildDepError "Win32"))
-            (hsPkgs."Win32-network" or (errorHandler.buildDepError "Win32-network"))
+            ];
+          buildable = true;
+          };
+        "prettyprinter-configurable-doctest" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."doctest" or (errorHandler.buildDepError "doctest"))
             ];
           buildable = true;
           };
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/jlbg3d6rcixbbvhpnh8383yv26l041gp-Win32-network-3825d3a;
+    src = (pkgs.lib).mkDefault /nix/store/rl1qhlm71lgwqbxw4g0mqgrjfzzfqv7l-plutus-fec9422/prettyprinter-configurable;
     }

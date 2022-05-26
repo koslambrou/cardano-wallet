@@ -11,57 +11,28 @@
     flags = {};
     package = {
       specVersion = "1.10";
-      identifier = { name = "servant-purescript"; version = "0.9.0.2"; };
+      identifier = { name = "plutus-ghc-stub"; version = "8.6.5"; };
       license = "BSD-3-Clause";
-      copyright = "Copyright: (c) 2016 Robert Klotzner";
-      maintainer = "robert Dot klotzner A T gmx Dot at";
-      author = "Robert Klotzner";
-      homepage = "https://github.com/eskimor/servant-purescript#readme";
+      copyright = "";
+      maintainer = "glasgow-haskell-users@haskell.org";
+      author = "The GHC Team";
+      homepage = "http://www.haskell.org/ghc/";
       url = "";
-      synopsis = "Generate PureScript accessor functions for you servant API";
-      description = "Please see README.md";
+      synopsis = "The GHC API";
+      description = "Stub functionality for the Plutus plugin, for cross compilers that\ndon't have a GHC library installed, like GHCJS\nThis should contain all the types and functions that the Plutus\ncompiler uses.\nFor technical reasons (Cabal), we need to be able to compile the plutus-tx\ncompiler for the host platform, even if we are going to load the plugin\nfrom the build platform libraries.";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
+          (hsPkgs."ghc-boot" or (errorHandler.buildDepError "ghc-boot"))
           (hsPkgs."bytestring" or (errorHandler.buildDepError "bytestring"))
-          (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-          (hsPkgs."directory" or (errorHandler.buildDepError "directory"))
-          (hsPkgs."filepath" or (errorHandler.buildDepError "filepath"))
-          (hsPkgs."http-types" or (errorHandler.buildDepError "http-types"))
-          (hsPkgs."lens" or (errorHandler.buildDepError "lens"))
-          (hsPkgs."mainland-pretty" or (errorHandler.buildDepError "mainland-pretty"))
-          (hsPkgs."purescript-bridge" or (errorHandler.buildDepError "purescript-bridge"))
-          (hsPkgs."servant" or (errorHandler.buildDepError "servant"))
-          (hsPkgs."servant-foreign" or (errorHandler.buildDepError "servant-foreign"))
-          (hsPkgs."servant-server" or (errorHandler.buildDepError "servant-server"))
-          (hsPkgs."servant-subscriber" or (errorHandler.buildDepError "servant-subscriber"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
+          (hsPkgs."template-haskell" or (errorHandler.buildDepError "template-haskell"))
           ];
         buildable = true;
         };
-      tests = {
-        "servant-purescript-test" = {
-          depends = [
-            (hsPkgs."base" or (errorHandler.buildDepError "base"))
-            (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
-            (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
-            (hsPkgs."mainland-pretty" or (errorHandler.buildDepError "mainland-pretty"))
-            (hsPkgs."lens" or (errorHandler.buildDepError "lens"))
-            (hsPkgs."purescript-bridge" or (errorHandler.buildDepError "purescript-bridge"))
-            (hsPkgs."servant" or (errorHandler.buildDepError "servant"))
-            (hsPkgs."servant-foreign" or (errorHandler.buildDepError "servant-foreign"))
-            (hsPkgs."servant-purescript" or (errorHandler.buildDepError "servant-purescript"))
-            (hsPkgs."servant-subscriber" or (errorHandler.buildDepError "servant-subscriber"))
-            (hsPkgs."text" or (errorHandler.buildDepError "text"))
-            ];
-          buildable = true;
-          };
-        };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/wpxma8w4lhg0kpmasqp1iq19br4xzirp-servant-purescript-a761044;
+    src = (pkgs.lib).mkDefault /nix/store/rl1qhlm71lgwqbxw4g0mqgrjfzzfqv7l-plutus-fec9422/stubs/plutus-ghc-stub;
     }

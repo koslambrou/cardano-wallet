@@ -361,7 +361,6 @@
             (hsPkgs."random" or (errorHandler.buildDepError "random"))
             (hsPkgs."retry" or (errorHandler.buildDepError "retry"))
             (hsPkgs."safe" or (errorHandler.buildDepError "safe"))
-            (hsPkgs."scrypt" or (errorHandler.buildDepError "scrypt"))
             (hsPkgs."servant" or (errorHandler.buildDepError "servant"))
             (hsPkgs."servant-server" or (errorHandler.buildDepError "servant-server"))
             (hsPkgs."should-not-typecheck" or (errorHandler.buildDepError "should-not-typecheck"))
@@ -386,7 +385,7 @@
             (hsPkgs."wai" or (errorHandler.buildDepError "wai"))
             (hsPkgs."wai-extra" or (errorHandler.buildDepError "wai-extra"))
             (hsPkgs."warp" or (errorHandler.buildDepError "warp"))
-            ];
+            ] ++ (pkgs.lib).optional (flags.scrypt) (hsPkgs."scrypt" or (errorHandler.buildDepError "scrypt"));
           build-tools = [
             (hsPkgs.buildPackages.hspec-discover.components.exes.hspec-discover or (pkgs.buildPackages.hspec-discover or (errorHandler.buildToolDepError "hspec-discover:hspec-discover")))
             ];

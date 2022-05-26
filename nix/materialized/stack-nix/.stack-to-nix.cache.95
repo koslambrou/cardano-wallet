@@ -10,30 +10,54 @@
   {
     flags = {};
     package = {
-      specVersion = "1.10";
-      identifier = { name = "ekg-json"; version = "0.1.0.7"; };
-      license = "BSD-3-Clause";
+      specVersion = "2.4";
+      identifier = { name = "word-array"; version = "0.1.0.0"; };
+      license = "Apache-2.0";
       copyright = "";
-      maintainer = "Johan Tibell <johan.tibell@gmail.com>,\nMikhail Glushenkov <mikhail.glushenkov@gmail.com>";
-      author = "Johan Tibell";
-      homepage = "https://github.com/tibbe/ekg-json";
+      maintainer = "michael.peyton-jones@iohk.io";
+      author = "Zachary Churchill, Michael Peyton Jones";
+      homepage = "https://github.com/plutus";
       url = "";
-      synopsis = "JSON encoding of ekg metrics";
-      description = "Encodes ekg metrics as JSON, using the same encoding as used by the\nekg package, thus allowing ekg metrics to be served by other HTTP\nservers than the one used by the ekg package.";
+      synopsis = "";
+      description = "Treat integral types as arrays of smaller integral types";
       buildType = "Simple";
       };
     components = {
       "library" = {
         depends = [
-          (hsPkgs."aeson" or (errorHandler.buildDepError "aeson"))
           (hsPkgs."base" or (errorHandler.buildDepError "base"))
-          (hsPkgs."ekg-core" or (errorHandler.buildDepError "ekg-core"))
-          (hsPkgs."text" or (errorHandler.buildDepError "text"))
-          (hsPkgs."unordered-containers" or (errorHandler.buildDepError "unordered-containers"))
+          (hsPkgs."mono-traversable" or (errorHandler.buildDepError "mono-traversable"))
+          (hsPkgs."primitive" or (errorHandler.buildDepError "primitive"))
+          (hsPkgs."deepseq" or (errorHandler.buildDepError "deepseq"))
           ];
         buildable = true;
         };
+      tests = {
+        "test" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."tasty" or (errorHandler.buildDepError "tasty"))
+            (hsPkgs."tasty-quickcheck" or (errorHandler.buildDepError "tasty-quickcheck"))
+            (hsPkgs."QuickCheck" or (errorHandler.buildDepError "QuickCheck"))
+            (hsPkgs."vector" or (errorHandler.buildDepError "vector"))
+            (hsPkgs."word-array" or (errorHandler.buildDepError "word-array"))
+            (hsPkgs."mono-traversable" or (errorHandler.buildDepError "mono-traversable"))
+            ];
+          buildable = true;
+          };
+        };
+      benchmarks = {
+        "bench" = {
+          depends = [
+            (hsPkgs."base" or (errorHandler.buildDepError "base"))
+            (hsPkgs."tasty-bench" or (errorHandler.buildDepError "tasty-bench"))
+            (hsPkgs."word-array" or (errorHandler.buildDepError "word-array"))
+            (hsPkgs."primitive" or (errorHandler.buildDepError "primitive"))
+            ];
+          buildable = true;
+          };
+        };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/rjw1ac07zxphq6zf7lf8127w5g3wig5y-ekg-json-00ebe72;
+    src = (pkgs.lib).mkDefault /nix/store/rl1qhlm71lgwqbxw4g0mqgrjfzzfqv7l-plutus-fec9422/word-array;
     }

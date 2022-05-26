@@ -38,7 +38,6 @@
           (hsPkgs."cardano-ledger-shelley-ma" or (errorHandler.buildDepError "cardano-ledger-shelley-ma"))
           (hsPkgs."cardano-protocol-tpraos" or (errorHandler.buildDepError "cardano-protocol-tpraos"))
           (hsPkgs."cardano-slotting" or (errorHandler.buildDepError "cardano-slotting"))
-          (hsPkgs."compact-map" or (errorHandler.buildDepError "compact-map"))
           (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
           (hsPkgs."data-default-class" or (errorHandler.buildDepError "data-default-class"))
           (hsPkgs."hashable" or (errorHandler.buildDepError "hashable"))
@@ -68,7 +67,6 @@
             (hsPkgs."cardano-ledger-shelley-ma-test" or (errorHandler.buildDepError "cardano-ledger-shelley-ma-test"))
             (hsPkgs."cardano-protocol-tpraos" or (errorHandler.buildDepError "cardano-protocol-tpraos"))
             (hsPkgs."cardano-slotting" or (errorHandler.buildDepError "cardano-slotting"))
-            (hsPkgs."compact-map" or (errorHandler.buildDepError "compact-map"))
             (hsPkgs."containers" or (errorHandler.buildDepError "containers"))
             (hsPkgs."data-default-class" or (errorHandler.buildDepError "data-default-class"))
             (hsPkgs."plutus-core" or (errorHandler.buildDepError "plutus-core"))
@@ -91,5 +89,5 @@
         };
       };
     } // rec {
-    src = (pkgs.lib).mkDefault /nix/store/y5zp7ycn9ypz1z2xak67wkdw5s6isc2h-cardano-ledger-1db68a3/eras/alonzo/test-suite;
+    src = (pkgs.lib).mkDefault /nix/store/208wi580npbvkypik9z8w6s04yxp03jv-cardano-ledger-c415253/eras/alonzo/test-suite;
     }
