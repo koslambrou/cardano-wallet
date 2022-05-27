@@ -8,12 +8,17 @@ module Cardano.Wallet.Primitive.Types.TokenQuantity.Gen
     , shrinkTokenQuantity
     , shrinkTokenQuantityPositive
     , shrinkTokenQuantityFullRange
+    , partitionTokenQuantity
     ) where
 
 import Prelude
 
 import Cardano.Wallet.Primitive.Types.TokenQuantity
     ( TokenQuantity (..) )
+import Control.Monad
+    ( replicateM )
+import Data.List.NonEmpty
+    ( NonEmpty )
 import Data.Word
     ( Word64 )
 import Test.QuickCheck
@@ -90,6 +95,26 @@ shrinkTokenQuantityFullRange =
     -- Given that we may have a large value, we limit the number of results
     -- returned in order to avoid processing long lists of shrunken values.
     take 8 . shrinkTokenQuantity
+
+--------------------------------------------------------------------------------
+-- Partitioning token quantities
+--------------------------------------------------------------------------------
+
+-- | Partitions a token quantity randomly into a given number of parts.
+--
+-- Satisfies the following properties:
+--
+-- prop> forAll (partitionTokenQuantity q i) $ (==       q) . fold
+-- prop> forAll (partitionTokenQuantity q i) $ (== max 1 i) . length
+--
+partitionTokenQuantity
+    :: TokenQuantity -> Int -> Gen (NonEmpty TokenQuantity)
+partitionTokenQuantity c i =
+    TokenQuantity.partitionDefault c <$> genWeights
+  where
+    genWeights :: Gen (NonEmpty TokenQuantity)
+    genWeights = NE.fromList <$> replicateM (max 1 i)
+        (chooseTokenQuantity (TokenQuantity 1, max (TokenQuantity 1) c))
 
 --------------------------------------------------------------------------------
 -- Internal functions
