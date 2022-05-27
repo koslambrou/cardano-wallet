@@ -1,7 +1,8 @@
 {-# LANGUAGE TypeApplications #-}
 
 module Cardano.Wallet.Primitive.Types.TokenQuantity.Gen
-    ( genTokenQuantity
+    ( chooseTokenQuantity
+    , genTokenQuantity
     , genTokenQuantityPositive
     , genTokenQuantityFullRange
     , shrinkTokenQuantity
@@ -17,6 +18,19 @@ import Data.Word
     ( Word64 )
 import Test.QuickCheck
     ( Gen, choose, frequency, shrink, sized )
+import Test.QuickCheck.Extra
+    ( chooseNatural )
+
+import qualified Cardano.Wallet.Primitive.Types.TokenQuantity as TokenQuantity
+import qualified Data.List.NonEmpty as NE
+
+--------------------------------------------------------------------------------
+-- Choosing token quantities from a range.
+--------------------------------------------------------------------------------
+
+chooseTokenQuantity :: (TokenQuantity, TokenQuantity) -> Gen TokenQuantity
+chooseTokenQuantity (TokenQuantity a, TokenQuantity b) =
+    TokenQuantity <$> chooseNatural (a, b)
 
 --------------------------------------------------------------------------------
 -- Token quantities chosen according to the size parameter.
